@@ -27,7 +27,7 @@ while (continuar)
 
     Console.WriteLine(ExibirResultado(opcaoJogador, opcaoPC, vitoria, ref jogadores, nomeJogador));
 
-    continuar = EscolhaSimOuNao("\nQuer jogar novamente?");
+    continuar = EscolhaSimOuNao($"\nQuer jogar novamente, {nomeJogador}?");
 
     if (continuar)
     {
@@ -35,7 +35,7 @@ while (continuar)
     }
 }
 
-Console.WriteLine("\n👋 Tchau! Até a próxima");
+Console.WriteLine($"\n👋 Tchau, {nomeJogador}! Até a próxima!");
 ExibirEstatisticas(jogadores);
 
 
@@ -138,23 +138,23 @@ string ExibirResultado(char opcaoJogador, int opcaoPC, bool vitoria, ref Diction
     if (int.Parse(opcaoJogador.ToString()) == opcaoPC)
     {
         jogadores[nomeJogador][2]++; // Incrementar empate
-        return "\n😀 Legal! Nós empatamos!";
+        return $"\n😀 Legal, {nomeJogador}! Nós empatamos!";
     }
     else if (vitoria)
     {
         jogadores[nomeJogador][0]++; // Incrementar vitória
-        return "\n😀 Parabéns! Você venceu.";
+        return $"\n😀 Parabéns, {nomeJogador}! Você venceu.";
     }
     else
     {
         jogadores[nomeJogador][1]++; // Incrementar derrota
-        return "\n😀 Haha, eu venci! Não foi dessa vez. Você pode ter mais sorte na próxima.";
+        return $"\n😀 Haha, eu venci! Não foi dessa vez, {nomeJogador}. Você pode ter mais sorte na próxima.";
     }
 }
 
 string TrocarJogador(ref Dictionary<string, int[]> jogadores, string jogadorAtual)
 {
-    bool trocarJogador = EscolhaSimOuNao("Deseja trocar de jogador?");
+    bool trocarJogador = EscolhaSimOuNao($"Deseja trocar de jogador, {jogadorAtual}?");
     while (true)
     {
         if (trocarJogador)
