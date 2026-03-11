@@ -1,10 +1,4 @@
-﻿// ✅ Modularizar o código criando métodos e aplicando os conceitos aprendidos
-// ✅ Validar de entrada de dados;
-// ✅ Gravar o nome do jogador;
-// Permitir mudar de jogador;
-// Imprimir estatísticas dos jogadores.
-
-using System;
+﻿using System;
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
@@ -20,7 +14,7 @@ bool continuar = EscolhaSimOuNao($"😀 Olá, {nomeJogador}! Vamos jogar Jokempo
 
 while (continuar)
 {
-    Console.WriteLine("Então vamos começar...");
+    Console.WriteLine("\nEntão vamos começar...");
 
     char opcaoJogador = ObterEscolhaJogador(nomeJogador);
 
@@ -31,11 +25,18 @@ while (continuar)
 
     Console.WriteLine(ExibirOpcaoPC(opcaoPC));
 
-    Console.WriteLine(ExibirResultado(opcaoJogador, opcaoPC, vitoria));
+    Console.WriteLine(ExibirResultado(opcaoJogador, opcaoPC, vitoria, ref jogadores, nomeJogador));
 
-    continuar = EscolhaSimOuNao("Quer jogar novamente?");
+    continuar = EscolhaSimOuNao("\nQuer jogar novamente?");
+
+    if (continuar)
+    {
+        nomeJogador = TrocarJogador(ref jogadores, nomeJogador);
+    }
 }
-Console.WriteLine("👋 Tchau! Até a próxima");
+
+Console.WriteLine("\n👋 Tchau! Até a próxima");
+ExibirEstatisticas(jogadores);
 
 
 string RegistrarJogador(Dictionary<string, int[]> jogadores)
@@ -43,18 +44,18 @@ string RegistrarJogador(Dictionary<string, int[]> jogadores)
     string nome;
     do
     {
-        Console.WriteLine("Digite o seu nome:");
+        Console.WriteLine("\nDigite o seu nome:");
         nome = (Console.ReadLine() ?? "").Trim();
 
         if (string.IsNullOrEmpty(nome))
         {
-            Console.WriteLine("Nome inválido. Tente novamente.");
+            Console.WriteLine("\nNome inválido. Tente novamente.");
         }
     } while (string.IsNullOrEmpty(nome));
 
     if (!jogadores.ContainsKey(nome))
     {
-        jogadores[nome] = new int[3];
+        jogadores[nome] = new int[3]; // [vitórias, derrotas, empates]
     }
 
     return nome;
@@ -69,11 +70,11 @@ bool EscolhaSimOuNao(string mensagem)
         Console.WriteLine("1 - Sim ou 0 - Não");
         opcaoJogador = Console.ReadKey().KeyChar;
 
-        if (opcaoJogador != '1' || opcaoJogador != '0')
+        if (opcaoJogador != '1' && opcaoJogador != '0')
         {
-            Console.WriteLine("Opção inválida! Tente novamente.");
+            Console.WriteLine("\nOpção inválida! Tente novamente.");
         }
-    } while (opcaoJogador != '1' || opcaoJogador != '0');
+    } while (opcaoJogador != '1' && opcaoJogador != '0');
 
     return opcaoJogador == '1';
 }
@@ -83,14 +84,14 @@ char ObterEscolhaJogador(string nomeJogador)
     char opcao;
     do
     {
-        Console.WriteLine("Escolha uma opção: 0 - Pedra ✊, 1 - Papel ✋ ou 2 - Tesoura ✌");
+        Console.WriteLine($"\n{nomeJogador}, escolha uma opção: 0 - Pedra ✊, 1 - Papel ✋ ou 2 - Tesoura ✌");
         opcao = Console.ReadKey().KeyChar;
 
-        if (opcao != 0 || opcao != 1 || opcao != 2)
+        if (opcao != '0' && opcao != '1' && opcao != '2')
         {
-            Console.WriteLine("Opção inválida! Tente novamente.");
+            Console.WriteLine("\nOpção inválida! Tente novamente.");
         }
-    } while (opcao != 0 || opcao != 1 || opcao != 2);
+    } while (opcao != '0' && opcao != '1' && opcao != '2');
 
     return opcao;
 }
@@ -132,12 +133,67 @@ string ExibirOpcaoPC(int opcaoPC)
     }
 }
 
-string ExibirResultado(char opcaoJogador, int opcaoPC, bool vitoria)
+string ExibirResultado(char opcaoJogador, int opcaoPC, bool vitoria, ref Dictionary<string, int[]> jogadores, string nomeJogador)
 {
     if (int.Parse(opcaoJogador.ToString()) == opcaoPC)
-        return "😀 Legal! Nós empatamos!";
+    {
+        jogadores[nomeJogador][2]++; // Incrementar empate
+        return "\n😀 Legal! Nós empatamos!";
+    }
     else if (vitoria)
-        return "😀 Parabéns! Você venceu.";
+    {
+        jogadores[nomeJogador][0]++; // Incrementar vitória
+        return "\n😀 Parabéns! Você venceu.";
+    }
     else
-        return "😀 Haha, eu venci! Não foi dessa vez. Você pode ter mais sorte na próxima.";
+    {
+        jogadores[nomeJogador][1]++; // Incrementar derrota
+        return "\n😀 Haha, eu venci! Não foi dessa vez. Você pode ter mais sorte na próxima.";
+    }
+}
+
+string TrocarJogador(ref Dictionary<string, int[]> jogadores, string jogadorAtual)
+{
+    bool trocarJogador = EscolhaSimOuNao("Deseja trocar de jogador?");
+    while (true)
+    {
+        if (trocarJogador)
+        {
+            Console.WriteLine("\nQual jogador deseja usar?");
+            var nomes = new List<string>(jogadores.Keys);
+            for (int i = 0; i < nomes.Count; i++)
+            {
+                Console.WriteLine($"{i + 1} - {nomes[i]}");
+            }
+            Console.WriteLine("0 - Criar novo jogador");
+
+            char opcaoTroca = Console.ReadKey().KeyChar;
+            if (opcaoTroca == '0')
+            {
+                return RegistrarJogador(jogadores);
+            }
+            else
+            {
+                opcaoTroca -= '0'; // Converter char para int
+                if (opcaoTroca > nomes.Count || opcaoTroca < 1)
+                {
+                    Console.WriteLine("Opção inválida! Tente novamente");
+                }
+                else
+                {      
+                    return nomes[opcaoTroca - 1];
+                }
+            }
+        }
+        return jogadorAtual;
+    }
+}
+
+void ExibirEstatisticas(Dictionary<string, int[]> jogadores)
+{
+    Console.WriteLine("\n📊 Estatísticas dos Jogadores:");
+    foreach (var jogador in jogadores)
+    {
+        Console.WriteLine($"{jogador.Key}: {jogador.Value[0]} vitória(s), {jogador.Value[1]} derrota(s), {jogador.Value[2]} empate(s)");
+    }
 }
