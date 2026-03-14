@@ -2,11 +2,15 @@
 
 ### Requisitos:
 
-- Modularizar o código criando métodos e aplicando os conceitos aprendidos
-- Validar de entrada de dados;
-- Gravar o nome do jogador;
-- Permitir mudar de jogador;
-- Imprimir estatísticas dos jogadores.
+Continuando o nosso Jokempo, adicione as seguintes funcionalidades:
+
+- Crie um branch baseada na sua última entrega
+- Crie um projeto Class Library
+- Modele as classes necessárias para o jogo (Jogador, Estatisticas, Rodada, etc...)
+- Crie as class de acordo com a sua analise para a solução
+- Crie um projeto Windows Form
+- Relacione a referência do Projeto Class Library ao projeto Windows Form
+- Implemente a GUI do jogo usando Windows Form
 
 ### Integrantes:
 
