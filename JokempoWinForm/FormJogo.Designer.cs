@@ -120,13 +120,15 @@
             // 
             // txtResultado
             // 
+            txtResultado.Anchor = AnchorStyles.Left | AnchorStyles.Right;
             txtResultado.AutoSize = true;
             txtResultado.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            txtResultado.Location = new Point(369, 345);
+            txtResultado.Location = new Point(83, 349);
             txtResultado.Name = "txtResultado";
             txtResultado.Size = new Size(123, 23);
             txtResultado.TabIndex = 8;
             txtResultado.Text = "Resultado é ...";
+            txtResultado.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnJogarNovamente
             // 
@@ -165,7 +167,7 @@
             Controls.Add(btnPapel);
             Controls.Add(btnPedra);
             Name = "FormJogo";
-            Text = "Form1";
+            Text = "Jogo";
             Load += FormJogo_Load;
             ResumeLayout(false);
             PerformLayout();

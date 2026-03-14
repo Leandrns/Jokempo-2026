@@ -107,7 +107,7 @@
             Controls.Add(btnJogar);
             Controls.Add(labelNome);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Tela inicial";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();

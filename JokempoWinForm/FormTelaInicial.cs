@@ -37,17 +37,24 @@ namespace JokempoWinForm
 
         private void btnJogar_Click(object sender, EventArgs e)
         {
+            Jogador jogador;
             string nomeJogador = inputName.Text.Trim();
             if (nomeJogador == "")
             {
                 MessageBox.Show("Por favor, digite um nome válido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Jogador jogador = new(nomeJogador);
+            
             if (!jogoService.JogadorExiste(nomeJogador))
-            {   
+            {
+                jogador = new(nomeJogador);
                 jogoService.AdicionarJogador(jogador);
                 listJogadores.Items.Add(nomeJogador);
+            }
+            else { 
+
+                jogador = jogoService.Jogadores.Find(j => j.Nome.Equals(nomeJogador, StringComparison.OrdinalIgnoreCase));
+      
             }
             inputName.Clear();
 

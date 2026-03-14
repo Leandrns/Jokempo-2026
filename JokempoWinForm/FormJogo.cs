@@ -98,7 +98,9 @@ namespace JokempoWinForm
 
         private void btnEncerrar_Click(object sender, EventArgs e)
         {
-
+            var formEstatisticas = new FormEstatisticas(jogoService);
+            formEstatisticas.Show();
+            this.Close();
         }
 
         private void btnJogarNovamente_Click(object sender, EventArgs e)
